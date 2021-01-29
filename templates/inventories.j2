@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="main.css">
+</head>
+<body>
+<a href="index.html"><h3>--- back ---</h3></a> 
+
+<h1>{{ inventory_hostname }}</h1>
+<h2>Platform</h2>
+
+
+<table>
+    <thead>
+        <tr>
+        <th>device name</th>
+        <th>IPv4</td>
+        <th>platform</th>
+        <th>HW model</th>
+        <th>OS</th>
+        <th>SW version</th>
+        <th>Serial Number</th>
+        </tr>
+    </thead>
+    <tbody>
+      <tr>
+      <td>{{ _showversion.parsed.platform.hardware.device_name }}</td>
+      <td>{{ ansible_host }} </td>
+      <td>{{ _showversion.parsed.platform.name }}</td>
+      <td>{{ _showversion.parsed.platform.hardware.model }}</td>
+      <td>{{ _showversion.parsed.platform.os }}</td>
+      <td>{{ _showversion.parsed.platform.software.system_version }}</td>
+      <td>{{ _showversion.parsed.platform.hardware.processor_board_id }}</td>
+      </tr>
+    </tbody>
+</table>
+
+<h3>Inventory</h3>
+
+<table>
+    <thead>
+        <tr>
+        <th>name</th>
+        <th>description</th>
+        <th>slot</th>
+        <th>serial number</th>
+        </tr>
+    </thead>
+    <tbody>
+      {% for name, c in _showinventory.parsed.name.items() %}
+      <tr>        
+        <td>{{ c.pid | default('') }}</td>
+        <td>{{ c.description }}</td>
+        <td>{{ name }}</td>
+        <td>{{ c.serial_number | default('') }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,31 @@
+---
+# generate index for all reports ran before
+
+
+- name: HTML index and prework
+  block: 
+  - name: clean old HTML reports and files
+    file: 
+      path: "{{ item }}"
+      state: absent
+    loop:
+      - "{{ rp_output_dir }}index.html"
+      - "{{ rp_output_dir }}main.css"
+      - "{{ rp_output_dir }}red.png"
+      - "{{ rp_output_dir }}green.png"
+  - name: copy static HTML files
+    copy:
+      src: "{{ item}}"
+      dest: "{{ rp_output_dir }}{{item}}"
+    loop:
+      - main.css
+      - red.png
+      - green.png
+  - name: create HTML index file
+    template: 
+      src: reportindex.j2
+      dest: "{{ rp_output_dir }}index.html"
+  delegate_to: localhost
+  run_once: true
+  when: rp_output == 'html'
+  tags: [always]

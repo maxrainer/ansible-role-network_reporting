@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="main.css">
+</head>
+<body>
+<h2>Report Index</h2>
+
+<table>
+    <thead>
+        <tr>
+        <th>device</th>
+        <th>IPv4</th>
+        {% for report in rp_reports %}
+        <th>{{ report }}</th>
+        {% endfor %}
+        </tr>
+    </thead>
+ <tbody>
+ {% for host in groups['all'] %}
+  <tr>
+  <td> {{ hostvars[host].inventory_hostname }}</td>
+  <td> {{ hostvars[host].ansible_host }}</td>
+  {% for report in rp_reports %}
+    <td><a href="{{ hostvars[host].inventory_hostname }}_{{ report }}.html" title="link" >link</a></td>
+  {% endfor %}
+  <tr>
+ {% endfor %}
+ </tbody>
+</table>
+
+</body>
+</html>

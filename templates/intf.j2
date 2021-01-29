@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="main.css">
+</head>
+<body>
+<a href="index.html"><h3>--- back ---</h3></a> 
+
+<h1>{{ inventory_hostname }}</h1>
+<h2>Interface Report</h2>
+
+<table>
+    <thead>
+        <tr>
+        <th />
+        <th>name</th>
+        <th>type</th>
+        <th>admin</td>
+        <th>oper</td>
+        <th>bandwidth</td>
+        <th>duplex</th>
+        <th>MAC</th>
+        <th>IPv4</th>
+        <th>reliability</th>
+        <th>rxload</th>
+        <th>txload</th>
+        <th>in_pkts</th>
+        <th>out_pkts</th>
+        <th>in_octets</th>
+        <th>out_octets</th>
+        <th>in_errors</th>
+        <th>out_errros</th>
+        <th>in_discard</th>
+        <th>out_discard</th>
+        </tr>
+    </thead>
+    
+    <tbody>
+    {% for iname, v in _showinterface.parsed.items() %}
+        <tr>
+        <td>
+    {% if v.oper_status == 'up' %}
+      <img src="green.png" alt="{{ v.oper_status }}" style="width:14px;height:14px;">
+      {% else %}
+      <img src="red.png" alt="{{ v.oper_status }}" style="width:12px;height:12px;">      
+    {% endif %}
+        </td>
+        <td>{{ iname }} </td>
+        <td>{{ v.types }}</td>
+        <td>{{ v.admin_state }}</td>
+        <td>{{ v.oper_status }}</td>
+        <td>{{ v.bandwidth | default('') }}</td</>
+        <td>{{ v.duplex_mode | default('') }}</td>
+        <td>{{ v.mac_address }}</td>
+        {% if v.ipv4 is defined %}
+        {% for ip,vv in v.ipv4.items() %}
+            <td>{{ ip }}</td>
+        {% endfor %}
+        {% else %}
+            <td />
+        {% endif %}
+        <td>{{ v.reliability | default('') }}</td>
+        <td>{{ v.rxload | default('') }}</td>
+        <td>{{ v.txload | default('') }}</td>
+        <td>{{ v.counters.in_pkts | default('') }}</td>
+        <td>{{ v.counters.out_pkts | default('') }}</td>
+        <td>{{ v.counters.in_octets | default('') }}</td>
+        <td>{{ v.counters.out_octets | default('') }}</td>
+        <td>{{ v.counters.in_errors | default('') }}</td>
+        <td>{{ v.counters.out_errors | default('') }}</td>
+        <td>{{ v.counters.in_discard | default('') }}</td>
+        <td>{{ v.counters.out_discard | default('') }}</td>
+        </tr>
+    {% endfor %}
+    </body>
+</table>
+</html>

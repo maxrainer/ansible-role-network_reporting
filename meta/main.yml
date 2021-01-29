@@ -1,0 +1,23 @@
+dependencies: []
+
+collections: 
+  - cisco.nxos
+  - cisco.ios
+  - ansible.netcommon
+
+galaxy_info:
+  role_name: network_reporting
+  author: Markus Rainer
+  description: Reports for different networking devices
+  company: Red Hat
+
+  license: MIT
+
+  min_ansible_version: 2.9
+
+  platforms: 
+    - name: GenericUNIX
+      versions:
+        - all
+
+  galaxy_tags: [cisco, juniper, nexus, ios, demo, lab, networking]

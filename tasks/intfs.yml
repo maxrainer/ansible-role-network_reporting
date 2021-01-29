@@ -1,0 +1,50 @@
+---
+
+# - name: load backup data to variable
+#   set_fact: 
+#     _intfs_backup: "{{ lookup('file', backup_dir + inventory_hostname + '_backup.json' ) }}"
+#   ignore_errors: yes
+
+- name: pyats parser
+  block:
+  - name: parse show interface
+    ansible.netcommon.cli_parse:
+      command: "show interface"
+      parser:
+        name: ansible.netcommon.pyats
+    register: _showinterface
+  - debug: 
+      var: _showinterface.parsed
+    when: rp_output == 'debug'
+  when: ansible_network_os == 'nxos'
+  tags: interface
+
+- name: cache some variables needed 
+  set_fact:
+    rp_reports: "{{ rp_reports + ['interfaces'] }}"
+  when: rp_output != 'debug'
+  tags: interface
+
+- name: output handling
+  block: 
+  - name: clean old inventory report
+    file: 
+      path: "{{ rp_output_dir }}{{ inventory_hostname }}_interfaces.html"
+      state: absent
+    when: rp_output == 'html'
+  - name: generate interface HTML report
+    template: 
+      src: intf.j2
+      dest: "{{ rp_output_dir }}{{ inventory_hostname }}_interfaces.html"
+    when: rp_output == 'html'
+  - name: generate JSON outputs
+    copy: 
+      content: "{{ item.content | to_nice_json }}"
+      dest: "{{ rp_output_dir }}{{ inventory_hostname }}{{ item.name }}.json"
+    loop:
+      - "{ 'content' :{{ _showinterface.parsed }}, 'name': '_interface' }"
+    loop_control:
+      label: "{{ item.name }}"
+    when: rp_output == 'json'
+  delegate_to: localhost
+  tags: [interface]

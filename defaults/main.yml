@@ -1,0 +1,21 @@
+---
+# 
+# tags available:
+# interface, inventory
+
+rp_output_dir: /tmp/
+# html or json or debug
+rp_output: html
+
+rp_bgp: false
+rp_iv: false
+
+rp_reports: []
+rp_command: "show version"
+
+# valid parsers: 
+# ansible.netcommon.native
+# ansible.netcommon.pyats
+# ansible.netcommon.textfsm
+# ansible.netcommon.ntc_templates
+rp_parser: "ansible.netcommon.pyats"

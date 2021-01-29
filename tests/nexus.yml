@@ -1,0 +1,10 @@
+---
+
+- name: test nexus report
+  hosts: nxos
+  roles: 
+    - ../../network-reporting
+  connection: local
+  gather_facts: no
+
+  

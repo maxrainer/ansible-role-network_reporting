@@ -1,0 +1,15 @@
+---
+
+- include_tasks: general.yml
+  when: rp_output != 'html'
+  tags: [general]
+
+- include_tasks: inventories.yml
+  tags: [inventory]
+
+- include_tasks: intfs.yml
+  tags: [interface]
+
+- include_tasks: indexreport.yml
+  when: rp_output == 'html'
+  tags: [always]

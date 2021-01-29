@@ -1,0 +1,14 @@
+---
+
+- name: pyats parser
+  block:
+  - name: parse inventory  
+    ansible.netcommon.cli_parse:
+      command: "{{ rp_command }}"
+      parser:
+        name: "{{ rp_parser }}"
+    register: _general
+  - debug: 
+      var: _general.parsed
+    when: rp_output == 'debug'
+  tags: [general]

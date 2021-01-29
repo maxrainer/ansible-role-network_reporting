@@ -1,0 +1,56 @@
+---
+
+- name: pyats parser
+  block:
+  - name: parse inventory  
+    ansible.netcommon.cli_parse:
+      command: "show inventory"
+      parser:
+        name: ansible.netcommon.pyats
+    register: _showinventory
+  - debug: 
+      var: _showinventory
+    when: rp_output == 'debug'
+  - name: parse version  
+    ansible.netcommon.cli_parse:
+      command: "show version"
+      parser:
+        name: ansible.netcommon.pyats
+    register: _showversion
+  - debug: 
+      var: _showversion
+    when: rp_output == 'debug'
+  when: ansible_network_os == 'ios' or ansible_network_os == 'nxos'
+  tags: inventory
+
+- name: cache some variables needed 
+  set_fact:
+    rp_reports: "{{ rp_reports + ['inventory'] }}"
+  when: rp_output != 'debug'
+  tags: inventory
+
+- name: output handling
+  block: 
+  - name: clean old inventory report
+    file: 
+      path: "{{ rp_output_dir }}{{ inventory_hostname}}_inventory.html"
+      state: absent
+    when: rp_output == 'html'
+  - name: generate inventory HTML report
+    template: 
+      src: inventories.j2
+      dest: "{{ rp_output_dir }}{{ inventory_hostname}}_inventory.html"
+    when: rp_output == 'html'
+  - name: generate JSON outputs
+    copy: 
+      content: "{{ item.content | to_nice_json }}"
+      dest: "{{ rp_output_dir }}{{ inventory_hostname }}{{ item.name }}.json"
+    loop:
+      - "{ 'content' :{{ _showversion.parsed }}, 'name': '_version' }"
+      - "{ 'content' :{{ _showinventory.parsed }}, 'name': '_inventory' }"
+    loop_control:
+      label: "{{ item.name }}"
+    when: rp_output == 'json'
+  delegate_to: localhost
+  tags: [inventory]
+

@@ -1,0 +1,11 @@
+---
+
+- example: "system:    version 7.3(0)D1(1)"
+  getval: '\s+.*version\s+(?P<version>\S+)$'
+  result: 
+    OS: "{{ version }}"
+
+- example: "kickstart image file is: bootflash:///titanium-d1-kickstart.7.3.0.D1.1.bin"
+  getval: '\s+.*is: bootflash:///(?P<image>\S+)$'
+  result:
+    image: "{{ image }}"
