@@ -4,6 +4,10 @@
   when: rp_output != 'html'
   tags: [general]
 
+- include_tasks: facts.yml
+  when: rp_output != 'html' 
+  tags: [facts]
+
 - include_tasks: inventories.yml
   tags: [inventory]
 

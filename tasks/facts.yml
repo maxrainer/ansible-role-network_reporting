@@ -1,0 +1,19 @@
+---
+
+- name: Cisco NX-OS
+  block:
+    - name: gather NX-OS facts
+      cisco.nxos.nxos_facts:
+        gather_subset: "{{ rp_facts_gather_subset }}"
+        gather_network_resources: "{{ rp_facts_gather_network_resources }}"
+      register: _nxos_facts
+    - debug:
+        var: _nxos_facts
+      when: rp_output == 'debug'
+    - name: generate JSON outputs
+      copy: 
+        content: "{{ _nxos_facts | to_nice_json }}"
+        dest: "{{ rp_output_dir }}{{ inventory_hostname }}_facts.json"
+      when: rp_output == 'json'
+  when: ansible_network_os == 'nxos'
+  tags: [always]

@@ -19,3 +19,6 @@ rp_command: "show version"
 # ansible.netcommon.textfsm
 # ansible.netcommon.ntc_templates
 rp_parser: "ansible.netcommon.pyats"
+
+rp_facts_gather_subset: ['all']
+rp_facts_gather_network_resources: ['all']
