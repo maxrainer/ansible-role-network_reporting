@@ -17,7 +17,10 @@
         </tr>
     </thead>
  <tbody>
- {% for host in groups['all'] %}
+ {% if ansible_limit is not defined or ansible_limit == "" %}
+ {% set ansible_limit = 'all' %}
+ {% endif %}
+ {% for host in groups[ansible_limit] %}
   <tr>
   <td> {{ hostvars[host].inventory_hostname }}</td>
   <td> {{ hostvars[host].ansible_host }}</td>

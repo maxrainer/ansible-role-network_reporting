@@ -1,5 +1,8 @@
 ---
 
+- debug:
+    var: hostvars
+
 - include_tasks: general.yml
   when: rp_output != 'html'
   tags: [general]
