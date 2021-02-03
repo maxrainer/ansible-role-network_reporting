@@ -2,7 +2,7 @@
 
 - name: pyats parser
   block:
-  - name: parse inventory  
+  - name: "execute and parse: {{ rp_command }} using {{ rp_parser }}"   
     ansible.netcommon.cli_parse:
       command: "{{ rp_command }}"
       parser:
