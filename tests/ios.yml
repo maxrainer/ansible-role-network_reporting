@@ -1,0 +1,6 @@
+- name: test ios report
+  hosts: ios
+  roles: 
+    - ../../network-reporting
+  connection: local
+  gather_facts: no

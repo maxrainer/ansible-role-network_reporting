@@ -1,0 +1,11 @@
+---
+
+- example: "Cisco IOS Software, Linux Software (I86BI_LINUX-ADVENTERPRISEK9-M), Version 15.4(1)T, DEVELOPMENT TEST SOFTWARE"
+  getval: '.*\s+Version\s+(?P<version>\S+),.*$'
+  result: 
+    OS: "{{ version }}"
+
+- example: 'System image file is "unix:/opt/unetlab/addons/iol/bin/i86bi-linux-l3-adventerprisek9-15.4"'
+  getval: '\s*System image file is "(?P<image>\S+)"$'
+  result:
+    image: "{{ image }}"

@@ -1,7 +1,7 @@
 ---
 
 - example: "system:    version 7.3(0)D1(1)"
-  getval: '\s+.*version\s+(?P<version>\S+)$'
+  getval: '\s+(?P<version>\S+).*$'
   result: 
     OS: "{{ version }}"
 
