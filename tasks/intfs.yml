@@ -5,18 +5,19 @@
 #     _intfs_backup: "{{ lookup('file', backup_dir + inventory_hostname + '_backup.json' ) }}"
 #   ignore_errors: yes
 
+
 - name: pyats parser
   block:
   - name: parse show interface
     ansible.netcommon.cli_parse:
-      command: "show interface"
+      command: "{{ cmd_show_interface[ansible_network_os] }}"
       parser:
         name: ansible.netcommon.pyats
     register: _showinterface
   - debug: 
       var: _showinterface.parsed
     when: rp_output == 'debug'
-  when: ansible_network_os == 'nxos'
+  when: ansible_network_os == 'nxos' or ansible_network_os == 'ios'
   tags: interface
 
 - name: cache some variables needed 

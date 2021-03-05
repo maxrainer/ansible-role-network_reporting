@@ -46,8 +46,12 @@
     {% endif %}
         </td>
         <td>{{ iname }} </td>
-        <td>{{ v.types }}</td>
-        <td>{{ v.admin_state }}</td>
+    {% if v.types is defined %}
+        <td>{{ v.types  }}</td>
+    {% else %}
+        <td>{{ v.type | default('') }}</td>
+    {% endif %}
+        <td>{{ v.admin_state | default('') }}</td>
         <td>{{ v.oper_status }}</td>
         <td>{{ v.bandwidth | default('') }}</td</>
         <td>{{ v.duplex_mode | default('') }}</td>

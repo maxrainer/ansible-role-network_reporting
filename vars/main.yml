@@ -1,0 +1,5 @@
+---
+
+cmd_show_interface:
+  ios: "show interfaces"
+  nxos: "show interface"
