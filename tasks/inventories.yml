@@ -7,6 +7,7 @@
       command: "show inventory"
       parser:
         name: ansible.netcommon.pyats
+    when: ansible_network_os == 'nxos'
     register: _showinventory
   - debug: 
       var: _showinventory
@@ -53,4 +54,3 @@
     when: rp_output == 'json'
   delegate_to: localhost
   tags: [inventory]
-

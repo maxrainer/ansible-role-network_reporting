@@ -8,6 +8,8 @@
       parser:
         name: "{{ rp_parser }}"
     register: _general
+    vars:
+      ansible_connection: ansible.netcommon.network_cli
   - debug: 
       var: _general.parsed
     when: rp_output == 'debug'

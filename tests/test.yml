@@ -1,0 +1,6 @@
+- name: test report
+  hosts: all
+  roles: 
+    - ../../network-reporting
+  connection: local
+  gather_facts: no

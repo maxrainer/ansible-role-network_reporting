@@ -9,7 +9,6 @@
 <h1>{{ inventory_hostname }}</h1>
 <h2>Platform</h2>
 
-
 <table>
     <thead>
         <tr>
@@ -24,6 +23,7 @@
     </thead>
     <tbody>
       <tr>
+    {% if ansible_network_os == 'nxos' %}
       <td>{{ _showversion.parsed.platform.hardware.device_name }}</td>
       <td>{{ ansible_host }} </td>
       <td>{{ _showversion.parsed.platform.name }}</td>
@@ -31,12 +31,21 @@
       <td>{{ _showversion.parsed.platform.os }}</td>
       <td>{{ _showversion.parsed.platform.software.system_version }}</td>
       <td>{{ _showversion.parsed.platform.hardware.processor_board_id }}</td>
+    {% else %}
+      <td>{{ _showversion.parsed.version.hostname }}</td>
+      <td>{{ ansible_host }} </td>
+      <td>{{ _showversion.parsed.version.platform }}</td>
+      <td>{{ _showversion.parsed.version.platform }}</td>
+      <td>{{ _showversion.parsed.version.os }}</td>
+      <td>{{ _showversion.parsed.version.version }}</td>
+      <td>{{ _showversion.parsed.version.chassis_sn }}</td>
+    {% endif %}
       </tr>
     </tbody>
 </table>
 
 <h3>Inventory</h3>
-
+{% if _showinventory is defined and _showinventory.parsed is defined %}
 <table>
     <thead>
         <tr>
@@ -57,6 +66,9 @@
       {% endfor %}
     </tbody>
 </table>
+{% else %}
+<h4>no inventory data available</h4>
+{% endif %}
 
 </body>
 </html>
